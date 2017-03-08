@@ -17,7 +17,7 @@ stop-novnc:
 destroy-novnc: stop-novnc
 	docker ps -aq --filter name=$(NAME) | xargs -r docker rm
 
-.PHONY
+.PHONY: clean
 clean:
-	docker images $(NAME) | xargs -r docker rmi
+	docker images -q $(NAME) | xargs -r docker rmi
 

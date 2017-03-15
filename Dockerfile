@@ -5,7 +5,7 @@ ENV HOME=/root \
 	DEBIAN_FRONTEND=noninteractive \
 	LANG=en_US.UTF-8 \
 	LANGUAGE=en_US.UTF-8 \
-	LC_ALL=C.UTF-8 \
+	LC_ALL=en_US.UTF-8 \
 	DISPLAY=:0.0 \
 	DISPLAY_WIDTH=1024 \
 	DISPLAY_HEIGHT=768
@@ -24,9 +24,11 @@ RUN apk --update --upgrade add \
 	git \
 	socat \
 	supervisor \
-	xterm \
+        xterm \
+	xfce4-terminal \
 	xvfb \
-	x11vnc
+	x11vnc \
+        vim
 
 # Clone noVNC from github
 RUN git clone https://github.com/YuZhenpin/noVNC.git /root/noVNC \

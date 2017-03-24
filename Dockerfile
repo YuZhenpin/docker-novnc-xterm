@@ -31,14 +31,19 @@ RUN apk --update --upgrade add \
 	xfce4-terminal \
 	xvfb \
 	x11vnc \
-        vim
+        vim \
+        curl \
+        openssh
 
 # Clone noVNC from github
 RUN git clone https://github.com/YuZhenpin/noVNC.git /root/noVNC \
 	&& git clone https://github.com/kanaka/websockify /root/noVNC/utils/websockify \
 	&& rm -rf /root/noVNC/.git \
-	&& rm -rf /root/noVNC/utils/websockify/.git \
-	&& apk del git
+	&& rm -rf /root/noVNC/utils/websockify/.git
+
+# grab gosu for easy step-down from root
+RUN curl -o /usr/local/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/1.4/gosu-amd64" \
+    && chmod +x /usr/local/bin/gosu
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
@@ -46,5 +51,12 @@ COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN sed -i -- "s/ps -p/ps -o pid | grep/g" /root/noVNC/utils/launch.sh
 
 EXPOSE 8080
+
+RUN addgroup idea \
+    && adduser -h /home/idea -s /bin/bash -D -G idea idea
+
+WORKDIR /home/idea
+
+RUN mkdir /workspace && chmod -R 777 /workspace
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

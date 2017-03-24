@@ -24,7 +24,10 @@ RUN apk --update --upgrade add \
 	git \
 	socat \
 	supervisor \
-        xterm \
+        firefox-esr \
+        dbus \
+        fontconfig \
+        ttf-freefont \
 	xfce4-terminal \
 	xvfb \
 	x11vnc \

@@ -12,6 +12,7 @@ ENV HOME=/root \
 
 # x11vnc apk
 ADD /apk /apk
+ADD /etc /etc
 RUN cp /apk/.abuild/-58b7ee0c.rsa.pub /etc/apk/keys
 RUN apk --update add /apk/ossp-uuid-1.6.2-r0.apk
 RUN apk add /apk/ossp-uuid-dev-1.6.2-r0.apk
@@ -20,7 +21,7 @@ RUN apk add /apk/x11vnc-0.9.13-r0.apk
 # Install git, supervisor, VNC, & X11 packages
 RUN apk --update --upgrade add \
 	bash \
-	fluxbox \
+	openbox \
 	git \
 	socat \
 	supervisor \
@@ -36,14 +37,15 @@ RUN apk --update --upgrade add \
         openssh
 
 # Clone noVNC from github
+# RUN git clone https://github.com/kanaka/noVNC.git /root/noVNC \
 RUN git clone https://github.com/YuZhenpin/noVNC.git /root/noVNC \
 	&& git clone https://github.com/kanaka/websockify /root/noVNC/utils/websockify \
 	&& rm -rf /root/noVNC/.git \
 	&& rm -rf /root/noVNC/utils/websockify/.git
 
 # grab gosu for easy step-down from root
-RUN curl -o /usr/local/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/1.4/gosu-amd64" \
-    && chmod +x /usr/local/bin/gosu
+# RUN curl -o /usr/local/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/1.4/gosu-amd64" \
+#    && chmod +x /usr/local/bin/gosu
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 

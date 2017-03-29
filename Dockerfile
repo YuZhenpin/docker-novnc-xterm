@@ -44,8 +44,8 @@ RUN git clone https://github.com/YuZhenpin/noVNC.git /root/noVNC \
 	&& rm -rf /root/noVNC/utils/websockify/.git
 
 # grab gosu for easy step-down from root
-# RUN curl -o /usr/local/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/1.4/gosu-amd64" \
-#    && chmod +x /usr/local/bin/gosu
+RUN curl -o /usr/local/bin/gosu -sSL "https://github.com/tianon/gosu/releases/download/1.4/gosu-amd64" \
+    && chmod +x /usr/local/bin/gosu
 
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
@@ -54,8 +54,8 @@ RUN sed -i -- "s/ps -p/ps -o pid | grep/g" /root/noVNC/utils/launch.sh
 
 EXPOSE 8080
 
-RUN addgroup idea \
-    && adduser -h /home/idea -s /bin/bash -D -G idea idea
+RUN addgroup -g 1001 idea \
+    && adduser -u 1001 -h /home/idea -s /bin/bash -D -G idea idea
 
 WORKDIR /home/idea
 
